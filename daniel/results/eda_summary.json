@@ -1,0 +1,98 @@
+{
+  "universe": {
+    "n_symbols_total": 1749,
+    "n_symbols_ge_95pct_coverage": 1426,
+    "median_coverage_frac": 0.9964054636951832,
+    "n_symbols_full_history": 1251
+  },
+  "fold_sharpe": {
+    "classic": {
+      "pct_folds_positive": 0.5,
+      "median_fold_sharpe": 0.029596551703979304,
+      "worst_fold_sharpe": -4.153912616404608,
+      "best_fold_sharpe": 4.832150813996677
+    },
+    "autoencoder": {
+      "pct_folds_positive": 0.35294117647058826,
+      "median_fold_sharpe": -0.5060285054629384,
+      "worst_fold_sharpe": -4.5004069157639535,
+      "best_fold_sharpe": 3.468145939969336
+    },
+    "contrastive": {
+      "pct_folds_positive": 0.5294117647058824,
+      "median_fold_sharpe": 0.0355333732135728,
+      "worst_fold_sharpe": -3.1604027907106387,
+      "best_fold_sharpe": 5.022621752660567
+    }
+  },
+  "trades": {
+    "classic": {
+      "n_trades": 2607,
+      "median_holding_bars": 28.0,
+      "win_rate": 0.5193709244342156,
+      "median_trade_pnl_bps": 4.104977601906
+    },
+    "autoencoder": {
+      "n_trades": 2353,
+      "median_holding_bars": 34.0,
+      "win_rate": 0.47768805779855505,
+      "median_trade_pnl_bps": -3.126239221582
+    },
+    "contrastive": {
+      "n_trades": 2450,
+      "median_holding_bars": 30.0,
+      "win_rate": 0.48857142857142855,
+      "median_trade_pnl_bps": -1.4978911300889999
+    }
+  },
+  "pair_overlap": {
+    "n_unique_pairs": {
+      "classic": 280,
+      "autoencoder": 472,
+      "contrastive": 465
+    },
+    "jaccard_contrastive_classic": 0.25,
+    "jaccard_contrastive_ae": 0.11150652431791222,
+    "jaccard_classic_ae": 0.11407407407407408,
+    "n_shared_con_classic": 149,
+    "n_con_only_vs_classic": 316,
+    "top_pairs": {
+      "classic": {
+        "DHR/TMO": 38,
+        "BAC/GS": 37,
+        "MSFT/V": 35,
+        "AMAT/ASML": 32,
+        "AMAT/TXN": 32,
+        "ASML/TXN": 30,
+        "COF/PNC": 30,
+        "BRK.B/MS": 29,
+        "AMZN/PYPL": 29,
+        "ADBE/AMZN": 27
+      },
+      "autoencoder": {
+        "MA/V": 68,
+        "ACN/MA": 39,
+        "BAC/JPM": 26,
+        "DHR/TMO": 26,
+        "HD/LOW": 25,
+        "JPM/USB": 24,
+        "CL/KO": 23,
+        "ABBV/JNJ": 22,
+        "ACN/ADI": 21,
+        "AAPL/ASML": 19
+      },
+      "contrastive": {
+        "MA/V": 61,
+        "BAC/JPM": 39,
+        "ADI/TXN": 30,
+        "DAL/UAL": 29,
+        "MSFT/V": 27,
+        "AMZN/GOOG": 25,
+        "ADBE/MA": 22,
+        "AMZN/GOOGL": 21,
+        "AMAT/LRCX": 21,
+        "DHR/TMO": 21
+      }
+    }
+  }
+}
