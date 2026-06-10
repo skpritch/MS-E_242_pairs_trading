@@ -2,8 +2,9 @@ data/
 __pycache__/
 output/
 output_frozen_zscore/
-06_10_26_SP_lab.pptx
 run_all_output.log
+AGENTS.md
+CLAUDE.md
 daniel/
 Final project instruction.pdf
 report_draft.md
