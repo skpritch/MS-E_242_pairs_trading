@@ -31,6 +31,17 @@ from .io_utils import save_json
 SelectorFn = Callable[[pd.DataFrame, pd.DataFrame, Fold], list[PairParams]]
 
 
+def _top_n_liquid(
+    dv_slice: pd.DataFrame, symbols: list[str], top_n: int
+) -> list[str]:
+    """Keep top-N symbols by median dollar volume from the training-window slice."""
+    common = [s for s in symbols if s in dv_slice.columns]
+    if len(common) <= top_n:
+        return common
+    med = dv_slice[common].median().sort_values(ascending=False)
+    return med.head(top_n).index.tolist()
+
+
 # ── Fold generation ───────────────────────────────────────────────────────────
 
 def _trading_days(index: pd.DatetimeIndex) -> np.ndarray:
@@ -109,6 +120,7 @@ def run_walk_forward(
     wf_cfg: WalkForwardConfig | None = None,
     signal_cfg: SignalConfig | None = None,
     elig_cfg: EligibilityConfig | None = None,
+    dv_panel: pd.DataFrame | None = None,
     results_dir: str | None = None,
     arm_name: str = "arm",
     verbose: bool = True,
@@ -145,6 +157,14 @@ def run_walk_forward(
         # ── TRAIN slice ──
         tr_close = slice_window(close, fold.train_start, fold.train_end)
         tr_close = apply_nan_policy(tr_close, min_coverage=elig_cfg.min_coverage)
+
+        # ── Liquidity filter: top-N by median dollar volume on train window ──
+        if dv_panel is not None:
+            tr_dv = slice_window(dv_panel, fold.train_start, fold.train_end)
+            liquid_syms = _top_n_liquid(
+                tr_dv, list(tr_close.columns), elig_cfg.top_n_liquid)
+            tr_close = tr_close[liquid_syms]
+
         tr_logret = logret.reindex(columns=tr_close.columns)
         tr_logret = slice_window(tr_logret, fold.train_start, fold.train_end)
 

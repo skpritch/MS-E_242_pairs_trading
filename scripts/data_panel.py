@@ -62,6 +62,25 @@ def build_price_panel(years: int | list[int], price_col: str = "close") -> pd.Da
     return panel
 
 
+def build_dollar_volume_panel(years: int | list[int]) -> pd.DataFrame:
+    """Wide dollar-volume panel: rows=timestamp_utc, cols=symbols, values=close*volume."""
+    if isinstance(years, int):
+        years = [years]
+    cols = ["symbol", "timestamp_utc", "close", "volume"]
+    per_year = []
+    for y in tqdm(years, desc="Loading dollar volume", unit="yr"):
+        df = load_bars(y, regular_hours_only=True, columns=cols)
+        df["dollar_vol"] = df["close"] * df["volume"]
+        df = df.drop_duplicates(["timestamp_utc", "symbol"], keep="last")
+        wide = df.pivot(index="timestamp_utc", columns="symbol", values="dollar_vol")
+        per_year.append(wide)
+    panel = pd.concat(per_year, axis=0) if len(per_year) > 1 else per_year[0]
+    panel = panel.sort_index().reindex(sorted(panel.columns), axis=1)
+    panel.index.name = "timestamp_utc"
+    panel.columns.name = "symbol"
+    return panel
+
+
 def build_return_panel(
     price_panel: pd.DataFrame, drop_overnight: bool = True
 ) -> pd.DataFrame:

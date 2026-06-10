@@ -25,7 +25,7 @@ from .config import (
     SignalConfig,
     WalkForwardConfig,
 )
-from .data_panel import build_price_panel, build_return_panel
+from .data_panel import build_price_panel, build_return_panel, build_dollar_volume_panel
 from .backtest import run_walk_forward
 from .selector_classic import make_classic_selector
 from .selector_ae import make_ae_selector
@@ -95,6 +95,7 @@ def main():
     t0 = time.time()
     close_panel = build_price_panel(years)
     logret_panel = build_return_panel(close_panel)
+    dv_panel = build_dollar_volume_panel(years)
     print(f"  Loaded in {time.time() - t0:.1f}s: {close_panel.shape}")
 
     comparison = {}
@@ -113,7 +114,7 @@ def main():
         result = run_walk_forward(
             close_panel, logret_panel, selector,
             wf_cfg=wf_cfg, signal_cfg=signal_cfg, elig_cfg=elig_cfg,
-            results_dir=results_dir, arm_name="classic")
+            dv_panel=dv_panel, results_dir=results_dir, arm_name="classic")
         elapsed = time.time() - t0
 
         print(f"\n  Aggregate Sharpe: {result.aggregate['sharpe_annualized']:.3f}")
@@ -138,7 +139,7 @@ def main():
         result = run_walk_forward(
             close_panel, logret_panel, selector,
             wf_cfg=wf_cfg, signal_cfg=signal_cfg, elig_cfg=elig_cfg,
-            results_dir=results_dir, arm_name="autoencoder")
+            dv_panel=dv_panel, results_dir=results_dir, arm_name="autoencoder")
         elapsed = time.time() - t0
 
         print(f"\n  Aggregate Sharpe: {result.aggregate['sharpe_annualized']:.3f}")
@@ -163,7 +164,7 @@ def main():
         result = run_walk_forward(
             close_panel, logret_panel, selector,
             wf_cfg=wf_cfg, signal_cfg=signal_cfg, elig_cfg=elig_cfg,
-            results_dir=results_dir, arm_name="gru")
+            dv_panel=dv_panel, results_dir=results_dir, arm_name="gru")
         elapsed = time.time() - t0
 
         print(f"\n  Aggregate Sharpe: {result.aggregate['sharpe_annualized']:.3f}")
